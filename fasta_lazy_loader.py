@@ -171,7 +171,11 @@ class FastaLazyLoader( object ):
                         Alternatively, pass a file name as a string, which 
                         will be opened automatically.                   [stdin]
     @param out        - writable file-like object.                     [stdout]
-    @param index      - existing index. By default, create a new one.    [None]
+    @param index      - Existing index? By default, `None` will create a new
+                        one and save it in a temporary file, which is up to
+                        the user to delete!                              [None]
+    @param alphabet   - The BioPython.Alphabet which the sequences are assumed
+                        to be in.         [Bio.Alphabet.single_letter_alphabet]
     
     """
     alphabet    = single_letter_alphabet
