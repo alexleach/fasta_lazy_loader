@@ -163,9 +163,8 @@ class FastaLazyLoader( object ):
     A fasta parser designed to work with files too large for your 
     system's memory.
 
-    Keep the file object open, and move around using the ArbIO.index
-    This contains byte locations of each record, but if indexed, then
-    the sequence will be returned.
+    Keeps the file object open, and moves around it using locations stored in
+    a FastaIndex instance.
     
     @param in_handle  - readable file-like object containing Fasta formatted
                         sequences.
@@ -258,6 +257,7 @@ class FastaLazyLoader( object ):
             self.alphabet = alphabet
 
     def __del__(self):
+       """Make sure to call `close()` on garbage collection."""
         self.close()
 
     def __getitem__(self, accession):
@@ -295,8 +295,11 @@ class FastaLazyLoader( object ):
             id=id, description=desc )
 
     def __iter__(self):
+       """Iterate through all sequences recorded in the internal FastaIndex.
+       Return sequences in the same order as they appear in the file, because
+       random access would be silly."""
         for seq in self.indexes:
-            yield seq
+            yield self[seq]
 
     def __len__(self):
         return len(self.indexes)
@@ -323,8 +326,9 @@ class FastaLazyLoader( object ):
             yield self[accession]
 
     def index(self):
-        """ Indexes self.in_handle for sequence locations.
-        Returns the internal FastaIndex instance to the caller.
+        """ Indexes the fasta-formatted sequences in self.in_handle.
+        Returns the internal FastaIndex instance to the caller, without
+        saving it to disk.
         """
         handle = self.in_handle
         handle.seek(0)
