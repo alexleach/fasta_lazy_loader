@@ -24,9 +24,11 @@ sequence file.
 ## Example usage:
 
 A simple command-line application is included, which also serves to
-demonstrate usage (see the `main()` function, below).
+demonstrate usage (see the [`main()` function][1]).
 
 
 To test usage from the command line, you can just run:-
 
   > python fasta_lazy_loader.py -in BIG_FASTA_FILE.fasta
+
+[1]: https://github.com/alexleach/fasta_lazy_loader/blob/master/fasta_lazy_loader.py#L474 "fasta_lazy_loader.main"
